@@ -9,8 +9,13 @@ function Homecopia() {
   const [texto, setTexto] = useState('');
   const [consulta, setConsulta] = useState('');
   const [nombre, setnombre] = useState('');
-  const [id, setId] = useState('');
+  const [id, setId] = useState([]);
+  const [respuesta, setRespuesta] = useState([]);
+  const [num2, setNum2] = useState('');
+  const [id2, setId2] = useState('');
 
+  const supabase = createClient(import.meta.env.VITE_APP_SUPABASE_URL, 
+    import.meta.env.VITE_APP_SUPABASE_ANON_KEY);
   //-----------------------------verificacion
 
 
@@ -22,6 +27,7 @@ function Homecopia() {
 
     setTexto("Generando respuesta");
 
+    
     // recuerda que tengo que enviar la consulta lo cual es nombre pero es en si la pregunta
     const res = await fetch(`${API}/resultado`, {
       method: "POST",
@@ -33,33 +39,38 @@ function Homecopia() {
         consulta: nombre,
       }),
     });
-     await res.json();
+     //await res.clone().json(); //clone es para solventar un error que no he solventado con respecto al backend
+      await res.json();
 
      if (res.ok) {
-        //const data = await res.json();
+        const data = await res.json();
+        
+        
+        setTexto("Respuesta generada 😊. Apreta el boton de visualizar respuesta.")
        
-        getUsers() 
+        //getUsers() 
 
       } else {
         // Handle the error if needed
         console.error('Failed to fetch data');
 
-        getUsers() 
+        //setTexto("Error de comunicacion con los servidores 😔. por favor vuelva a intentarlo.");
+
+        //getUsers() 
       }
 
     } catch (error) {
         // Handle fetch error
         console.error('Error fetching data:', error);
 
-        getUsers() 
+        //setTexto("Error de comunicacion con los servidores 😔. por favor vuelva a intentarlo.");
+
+        //getUsers() 
       }
 
 
-    // aqui haces lo del get para de una vez reflejar la respuesta
-
-    
-    //getUsers()
-    
+      getUsers() 
+      //setTexto("Respuesta generada 😊. Apreta el boton de visualizar respuesta.")
 
   };
 
@@ -67,22 +78,61 @@ function Homecopia() {
 
   const getUsers = async () => {
 
+    const { data, error } = await supabase
+    .from('backendpythonmed')
+    .select('Respuesta')
+
+    setRespuesta (data.map(row => row.Respuesta))
+
+    const num =data.length-1
+
+
+    console.log(data[num].Respuesta);
+
+
+    setTexto(data[num].Respuesta);
+
+
     
-    const res = await fetch(`${API}/resultado`);
-    const data = await res.json();
-
-//[0] es porque primero es un array luego dentro esta el arreglo y saco la variable respuesta sin el id
-
-    console.log((data[0]['_id']));
-    const data2=JSON.stringify(data[0]);
-
-    console.log(data.length)
-    const n= data.length-1
+  };
 
 
-    setTexto((data[n]['Respuesta']));
+  
+  const getInicio = async () => {
 
-    deleteUsers ()
+    const { data, error } = await supabase
+    .from('backendpythonmed')
+    .select('Respuesta')
+
+    setRespuesta (data.map(row => row.Respuesta))
+
+    const num =data.length-1
+
+
+    console.log(data[num]);
+
+
+    
+  };
+
+
+  const getid = async () => {
+
+
+    const { data, error3 } = await supabase
+    .from('backendpythonmed')
+    .select('id')
+
+    setId (data.map(row => row.id))
+
+    setNum2(data.length)
+
+    const num= data.length-1
+
+    console.log(data[num]);
+
+    setId2(id[num]);
+
     
   };
 
@@ -90,17 +140,10 @@ function Homecopia() {
 
   const deleteUsers = async () => {
 
-    const res1 = await fetch(`${API}/resultado`);
-    const data1 = await res1.json();
-    console.log(data1.length)
-    const n= data1.length-1
-    setId(data1[n]['_id']);
+    getid()
+    const { data, error } = await supabase.from('backendpythonmed').delete().eq('id', id2)
+    console.log(data);
 
-    const res = await fetch(`${API}/resultado/${id}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      console.log(data);
     
   };
 
@@ -108,14 +151,12 @@ function Homecopia() {
 
   const deleteall = async () => {
 
+    getid()
+    const { data, error } = await supabase.from('backendpythonmed').delete().eq('id', id2)
+    console.log(data);
 
-    const res = await fetch(`${API}/resultado`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      console.log(data);
-      setnombre("");
-      setTexto("");
+    setnombre("");
+    setTexto("Hola 👨‍⚕️, por favor introduce tu consulta");
     
   };
 
@@ -124,18 +165,30 @@ function Homecopia() {
 
 
   useEffect(() => {
+    
+    getInicio()
 
-    setTexto("Hola ¿Cual es tu consulta?");
+    setTexto("Hola 👨‍⚕️, por favor introduce tu consulta sobre el caso clínico");
     
   }, []);
 
   //para no borrarlos por si los necesito
   //<button className="boton" onClick={() => { getUsers() }}>Hazme click</button> 
   //<button className="boton" onClick={() => { deleteUsers() }}>Hazme click</button>
+
+  //     <div className="card2">
+    //   <p>{"Conexion Chat Médico"}</p>
+      // </div> 
   
 
   return (
-    <div className="row">
+    <div className="card">
+
+    <div className="card11">
+    <h1>{"GRAY MATTER MED"}</h1>
+    </div>
+
+    
     <form onSubmit={handleSubmit}>
 
 
@@ -147,14 +200,26 @@ function Homecopia() {
 
       <div className="card">
       
-      <div className="card2">
-      <h4>{"Acceso a las IA disponibles de lenguaje de procesamiento natural sin nececidad de VPN"}</h4>
+      <p>{"Conexion Chat Médico"}</p>
+      
+      <div className="card12">
+      
+      <div className="card13">
+      
+      <p>{"El uso queda exclusivamente destinado para profesionales del área de la salud ya que se requiere criterio para realizar la consulta del caso clínico y discernir en la certeza de las respuestas generadas por la IA"}</p>
+     
+      </div>
+        <img src={residente1} className="App-logo" alt="logo" />  
       </div>
 
-      <div className="card2">
-        <p>{"Conexion Chat Médico"}</p>
+      <div className="card13">
+      <p className="respuestaclase">{texto ? texto : "Vuelve a cargar la respuesta por favor 😊."}</p>
+      </div>
 
-        <p>{texto}</p>
+      <div className="card3">
+        
+
+        
         
 
         <label>
@@ -188,11 +253,28 @@ function Homecopia() {
    
 
     </form>
+    
+    <div className="card9">
 
-    <div className="card2">
+    <div className="card7">
+    <button className="boton" onClick={() => { getUsers() }} disabled={texto === 'Generando respuesta'}>Mostrar respuesta</button>
+    </div> 
+
+    <div className="card7">
     <button className="boton" onClick={() => { deleteall() }}>Limpiar pantalla</button>
     </div> 
 
+    <div className="card7">
+    <input className="entrada" type="file" accept="image/*" onChange= {handleImageChange}></input>
+     {selectedImage ? (
+        <img src={selectedImage} className="App-logo" alt="Selected" />
+      ) : (
+        <p>No hay imagen seleccionada</p>
+      )}
+      <button className="boton" onClick={() => { imagentext() }}>analiza imagen</button>
+    </div> 
+
+    </div>
 
     </div>
     

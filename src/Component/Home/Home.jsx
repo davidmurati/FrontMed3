@@ -4,6 +4,7 @@ import './Home.css';
 import { createClient } from '@supabase/supabase-js';
 import residente1 from './residente2.jpg';
 
+
 const API = import.meta.env.VITE_APP_API;
 
 
@@ -17,11 +18,15 @@ function Home() {
   const [num2, setNum2] = useState('');
   const [id2, setId2] = useState('');
 
+  //-----------------------------verificacion
   const supabase = createClient(import.meta.env.VITE_APP_SUPABASE_URL, 
     import.meta.env.VITE_APP_SUPABASE_ANON_KEY);
-  //-----------------------------verificacion
 
 
+  //-----------------------------gemini
+
+
+  //-----------------------------
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,6 +35,7 @@ function Home() {
 
     setTexto("Generando respuesta");
 
+    
     // recuerda que tengo que enviar la consulta lo cual es nombre pero es en si la pregunta
     const res = await fetch(`${API}/resultado`, {
       method: "POST",
@@ -41,7 +47,8 @@ function Home() {
         consulta: nombre,
       }),
     });
-     await res.json();
+     //await res.clone().json(); //clone es para solventar un error que no he solventado con respecto al backend
+      await res.json();
 
      if (res.ok) {
         const data = await res.json();
@@ -70,8 +77,8 @@ function Home() {
       }
 
 
-      //getUsers() 
-      setTexto("Respuesta generada 😊. Apreta el boton de visualizar respuesta.")
+      getUsers() 
+      //setTexto("Respuesta generada 😊. Apreta el boton de visualizar respuesta.")
 
   };
 
@@ -157,7 +164,7 @@ function Home() {
     console.log(data);
 
     setnombre("");
-    setTexto("Hola 👨‍⚕️, por favor introduce tu consulta");
+    setTexto("Hola 😎, por favor introduce tu consulta");
     
   };
 
@@ -169,7 +176,7 @@ function Home() {
     
     getInicio()
 
-    setTexto("Hola 👨‍⚕️, por favor introduce tu consulta sobre el caso clínico");
+    setTexto("Hola 😎, por favor introduce tu consulta");
     
   }, []);
 
@@ -180,13 +187,23 @@ function Home() {
   //     <div className="card2">
     //   <p>{"Conexion Chat Médico"}</p>
       // </div> 
+
+      // mostrar la imagen
+
+      const [selectedImage, setSelectedImage] = useState(null);
+
+      const handleImageChange = (e) => {
+        const imageFile = e.target.files[0];
+        const imageUrl = URL.createObjectURL(imageFile);
+        setSelectedImage(imageUrl);
+      };
   
 
   return (
     <div className="card">
 
     <div className="card11">
-    <h1>{"GRAY MATTER MED"}</h1>
+    <h1>{"GRAY MATTER by Gemini"}</h1>
     </div>
 
     
@@ -201,13 +218,13 @@ function Home() {
 
       <div className="card">
       
-      <p>{"Conexion Chat Médico"}</p>
+      <p>{"Conexion Chat"}</p>
       
       <div className="card12">
       
       <div className="card13">
       
-      <p>{"El uso queda exclusivamente destinado para profesionales del área de la salud ya que se requiere criterio para realizar la consulta del caso clínico y discernir en la certeza de las respuestas generadas por la IA"}</p>
+      <p>{"El uso requiere criterio para realizar la consulta del caso y discernir en la certeza de las respuestas generadas por la IA"}</p>
      
       </div>
         <img src={residente1} className="App-logo" alt="logo" />  
@@ -256,10 +273,6 @@ function Home() {
     </form>
     
     <div className="card9">
-
-    <div className="card7">
-    <button className="boton" onClick={() => { getUsers() }} disabled={texto === 'Generando respuesta'}>Mostrar respuesta</button>
-    </div> 
 
     <div className="card7">
     <button className="boton" onClick={() => { deleteall() }}>Limpiar pantalla</button>
