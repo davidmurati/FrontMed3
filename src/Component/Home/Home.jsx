@@ -2,8 +2,10 @@ import { useState, useEffect, useRef  } from 'react'
 
 import './Home.css';
 import { createClient } from '@supabase/supabase-js';
+import gayMatter from './GRAY_MATTER-3.png';
 import residente1 from './residente2.jpg';
-
+import EfectoDesencriptarTexto from "../Efectos/EfectoDesencriptarTexto.jsx";
+import EfectoEscritura from "../Efectos/EfectoEscritura.jsx";
 
 const API = import.meta.env.VITE_APP_API;
 
@@ -33,8 +35,8 @@ function Home() {
 
     try {
 
-    setTexto("Generando respuesta");
-
+    setTexto("Generando respuesta"+textoE);
+    //setTexto(textoE);
     
     // recuerda que tengo que enviar la consulta lo cual es nombre pero es en si la pregunta
     const res = await fetch(`${API}/resultado`, {
@@ -188,7 +190,7 @@ function Home() {
     //   <p>{"Conexion Chat Médico"}</p>
       // </div> 
 
-      // mostrar la imagen
+      //--------------------------- mostrar la imagen
 
       const [selectedImage, setSelectedImage] = useState(null);
 
@@ -197,13 +199,30 @@ function Home() {
         const imageUrl = URL.createObjectURL(imageFile);
         setSelectedImage(imageUrl);
       };
+
+      //----------------------------------------------
   
+      const TextoTitulo = "GRAY MATTER by Gemini"
+      const TextoSubTitulo = "Conexion Chat"
+
+      const [textoE, setTextE] = useState("...")
+      const [bucle, setBucle] = useState(false) 
+      const [speed, setSpeed] = useState(1000)
 
   return (
     <div className="card">
 
     <div className="card11">
-    <h1>{"GRAY MATTER by Gemini"}</h1>
+
+    <>
+    <EfectoDesencriptarTexto
+      text={TextoTitulo}
+      mleftInicial={700}
+      transitionTime={5}
+      tickCambioletra={500}
+      randCar={null} />
+    </>
+
     </div>
 
     
@@ -213,19 +232,28 @@ function Home() {
     <div className="card3">
     
     <div className="logo-container">
-        
-      </div>
+         
+    </div>
 
       <div className="card">
       
-      <p>{"Conexion Chat"}</p>
+      <p>
+        <EfectoEscritura
+        text={TextoSubTitulo}
+        mleftInicial={700}
+        transitionTime={5}
+        tickCambioletra={500}
+        randCar={null} />
+      </p>
       
       <div className="card12">
       
       <div className="card13">
-      
+      <div className="card1">
+        
+      <img src={gayMatter} className="App-logo3" alt="logo" /> 
       <p>{"El uso requiere criterio para realizar la consulta del caso y discernir en la certeza de las respuestas generadas por la IA"}</p>
-     
+      </div>
       </div>
         <img src={residente1} className="App-logo" alt="logo" />  
       </div>
@@ -242,6 +270,7 @@ function Home() {
 
         <label>
         Consulta:
+        
         </label>
         </div>
         <div className="card">
@@ -257,7 +286,7 @@ function Home() {
             }
             }}
         />
-    
+
         </div>
 
       <div className="card2">

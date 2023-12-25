@@ -58,6 +58,19 @@ form {
   
 }
 
+
+.App-logo3 {
+  height: 40%;
+  width: 40%;
+  
+}
+
+.App-logo3:hover {
+  height: 45%;
+  width: 45%;
+  
+}
+
 .App-logo2 {
   height: 50%;
   width: 50%;
@@ -99,6 +112,7 @@ button[type="submit"]:hover {
   margin-top: 20px;
   background-color: #7940ff;
   border-color: #005ab300;
+  
 }
 
 
@@ -109,6 +123,7 @@ button[type="submit"]:hover {
   text-align: center;
   /*margin: 5px;*/
   background-color: #7940ff;
+  
 }
 
 .card12 {
@@ -121,7 +136,6 @@ button[type="submit"]:hover {
   justify-content: space-between;
   align-items: center;
   padding-left: 2%;
-  
   
  
   
@@ -144,6 +158,7 @@ button[type="submit"]:hover {
  
   
 }
+
 
 .card3 {
   width: auto;
