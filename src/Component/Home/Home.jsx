@@ -2,10 +2,13 @@ import { useState, useEffect, useRef  } from 'react'
 
 import './Home.css';
 import { createClient } from '@supabase/supabase-js';
+import { Toaster, toast } from 'sonner';
+
 import gayMatter from './GRAY_MATTER-3.png';
 import residente1 from './residente2.jpg';
 import EfectoDesencriptarTexto from "../Efectos/EfectoDesencriptarTexto.jsx";
 import EfectoEscritura from "../Efectos/EfectoEscritura.jsx";
+
 
 const API = import.meta.env.VITE_APP_API;
 
@@ -203,11 +206,20 @@ function Home() {
       //----------------------------------------------
   
       
-      const TextoSubTitulo = "Conexion Chat"
+      const TextoSubTitulo = "Conexión Chat"
 
       const [textoE, setTextE] = useState("...")
       const [bucle, setBucle] = useState(false) 
       const [speed, setSpeed] = useState(1000)
+
+      const copiarAlPortapapeles =()=>{ 
+          var aux = document.createElement("input");
+          aux.setAttribute("value", texto); document.body.appendChild(aux);
+          aux.select();
+          document.execCommand("copy");
+          document.body.removeChild(aux);
+          //alert("se copió al portapapeles");
+          }
 
   return (
     <div className="card">
@@ -287,9 +299,10 @@ function Home() {
         </div>
 
       <div className="card2">
-      <button className="boton" type="submit" disabled={texto === 'Generando respuesta'}>Enviar</button  >
+      <Toaster />
+      <button className="boton" type="submit" disabled={texto === 'Generando respuesta...'} onClick={() => { toast('Generando respuesta, espere por favor')}}>Enviar</button  >
       </div> 
-
+      
 
       </div> 
       
@@ -299,6 +312,11 @@ function Home() {
     </form>
     
     <div className="card9">
+
+    <div className="card7">
+    <Toaster />
+    <button className="boton" disabled={texto === 'Hola 😎, por favor introduce tu consulta' || texto === 'Generando respuesta...'} onClick={() => { copiarAlPortapapeles() , toast('se copió al portapapeles')}}>Copiar texto</button>
+    </div> 
 
     <div className="card7">
     <button className="boton" onClick={() => { deleteall() }}>Limpiar pantalla</button>
