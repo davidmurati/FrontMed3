@@ -202,7 +202,7 @@ function Home() {
 
       //----------------------------------------------
   
-      const TextoTitulo = "GRAY MATTER by Gemini"
+      
       const TextoSubTitulo = "Conexion Chat"
 
       const [textoE, setTextE] = useState("...")
@@ -215,12 +215,8 @@ function Home() {
     <div className="card11">
 
     <>
-    <EfectoDesencriptarTexto
-      text={TextoTitulo}
-      mleftInicial={700}
-      transitionTime={5}
-      tickCambioletra={500}
-      randCar={null} />
+    <h1>GRAY MATTER by gemini</h1>
+    
     </>
 
     </div>
@@ -252,6 +248,7 @@ function Home() {
       <div className="card1">
         
       <img src={gayMatter} className="App-logo3" alt="logo" /> 
+      
       <p>{"El uso requiere criterio para realizar la consulta del caso y discernir en la certeza de las respuestas generadas por la IA"}</p>
       </div>
       </div>
