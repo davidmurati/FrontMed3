@@ -91,19 +91,22 @@ function Home() {
 
   const getUsers = async () => {
 
+    getid() 
+
     const { data, error } = await supabase
     .from('backendpythonmed')
     .select('Respuesta')
 
     setRespuesta (data.map(row => row.Respuesta))
 
-    const num =data.length-1
+    //const num =data.length-1 //usa num si quieres el ultimo valor
+
+    getid() //si buscas por ultimo valor borrar
+
+    console.log(data[id].Respuesta);
 
 
-    console.log(data[num].Respuesta);
-
-
-    setTexto(data[num].Respuesta);
+    setTexto(data[id].Respuesta);
 
 
     
@@ -113,16 +116,18 @@ function Home() {
   
   const getInicio = async () => {
 
+    getid()
+
     const { data, error } = await supabase
     .from('backendpythonmed')
     .select('Respuesta')
 
     setRespuesta (data.map(row => row.Respuesta))
 
-    const num =data.length-1
+    //const num =data.length-1
 
 
-    console.log(data[num]);
+    console.log(data[id]);
 
 
     
@@ -136,15 +141,47 @@ function Home() {
     .from('backendpythonmed')
     .select('id')
 
-    setId (data.map(row => row.id))
+    //--------------------------busca por ultimo valor agrgado en el id
 
-    setNum2(data.length)
+    if (data.length > 0) {
+      const idsArray = data.map(row => row.id);
 
-    const num= data.length-1
+    
+    let maxId = idsArray[0]; // Se asume que el primer elemento es el máximo inicialmente
+    let idaux = 0
+    let numero=0
 
-    console.log(data[num]);
+    for (let i = 0; i <= idsArray.length-1; i++) {
+      
+      numero=numero+1
+    if (idsArray[i] > maxId) {
+      maxId = idsArray[i];
+      idaux= numero
+      setId(idaux);
+    }
+    
+    
+    console.log('El mayor ID es:', maxId+ "con " + idaux);
+    setId(idaux);
+    console.log(idaux);
+    }
 
-    setId2(id[num]);
+      } else {
+        console.log('No hay elementos en el array');
+      }
+
+
+    //---------------------buscaba el ultimo valor pero puede tener error por mala conexion a internet
+
+    //setId (data.map(row => row.id))
+
+    //setNum2(data.length)
+
+    //const num= data.length-1
+
+    //console.log(data[num]);
+
+    //setId2(id[num]);
 
     
   };
