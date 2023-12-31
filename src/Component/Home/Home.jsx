@@ -85,6 +85,8 @@ function Home() {
       getUsers() 
       //setTexto("Respuesta generada 😊. Apreta el boton de visualizar respuesta.")
 
+      //deleteUsers()
+
   };
 
   //---------------------------llamar informacion--------------
@@ -104,9 +106,10 @@ function Home() {
     getid() //si buscas por ultimo valor borrar
 
     console.log(data[id].Respuesta);
-
-
     setTexto(data[id].Respuesta);
+
+    //console.log(data[num].Respuesta);
+    //setTexto(data[num].Respuesta);
 
 
     
@@ -150,6 +153,7 @@ function Home() {
     let maxId = idsArray[0]; // Se asume que el primer elemento es el máximo inicialmente
     let idaux = 0
     let numero=0
+    setId2(idsArray[0])
 
     for (let i = 0; i <= idsArray.length-1; i++) {
       
@@ -201,12 +205,10 @@ function Home() {
 
   const deleteall = async () => {
 
-    getid()
-    const { data, error } = await supabase.from('backendpythonmed').delete().eq('id', id2)
-    console.log(data);
-
     setnombre("");
     setTexto("Hola 😎, por favor introduce tu consulta");
+
+    deleteUsers()
     
   };
 
